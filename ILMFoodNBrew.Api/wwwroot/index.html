@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>ILM Food n Brew</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>ILM Food <span class="ampersand">n</span> Brew</h1>
+            <p class="subtitle">Wilmington's Food Truck Tracker</p>
+        </div>
+    </header>
+
+    <div class="controls">
+        <div class="date-slider-container">
+            <button id="prevDay" class="day-btn" aria-label="Previous day">&larr;</button>
+            <div class="date-display">
+                <span id="currentDay" class="current-day">Today</span>
+                <span id="currentDate" class="current-date"></span>
+            </div>
+            <button id="nextDay" class="day-btn" aria-label="Next day">&rarr;</button>
+        </div>
+        <div class="day-pills" id="dayPills"></div>
+        <div class="truck-count" id="truckCount"></div>
+    </div>
+
+    <div id="map"></div>
+
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2>Trucks for <span id="sidebarDate">Today</span></h2>
+            <button id="closeSidebar" class="close-btn">&times;</button>
+        </div>
+        <div class="truck-list" id="truckList"></div>
+    </div>
+
+    <button id="listToggle" class="list-toggle" aria-label="Toggle truck list">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+    </button>
+
+    <button id="myLocation" class="my-location-btn" aria-label="Find my location">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M12 2v4M12 18v4M2 12h4M18 12h4"></path>
+        </svg>
+    </button>
+
+    <div id="radiusControl" class="radius-control hidden">
+        <label for="radiusSlider">Radius: <span id="radiusValue">5</span> mi</label>
+        <input type="range" id="radiusSlider" min="1" max="25" value="5" step="1">
+        <button id="clearRadius" class="clear-radius-btn">Clear</button>
+    </div>
+
+    <div class="powered-by">
+        <img src="/images/klein-meridian-logo.png" alt="Klein Meridian Consulting" class="powered-logo">
+        <span>Powered by <strong>Klein Meridian</strong></span>
+    </div>
+
+    <div id="loading" class="loading-overlay">
+        <div class="spinner"></div>
+        <p>Loading food trucks...</p>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,880 @@
+:root {
+    --teal: #007680;
+    --teal-light: #009aa6;
+    --teal-dark: #005a61;
+    --gold: #FFD600;
+    --gold-dim: #c9aa00;
+    --navy: #003366;
+    --navy-light: #004d99;
+    --bg-dark: #0d1117;
+    --bg-card: #161b22;
+    --bg-card-hover: #1c2333;
+    --text-primary: #e6edf3;
+    --text-secondary: #8b949e;
+    --border: #30363d;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    overflow: hidden;
+    height: 100vh;
+}
+
+/* Header */
+header {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--teal-dark) 100%);
+    padding: 12px 20px;
+    position: relative;
+    z-index: 1000;
+    border-bottom: 3px solid var(--gold);
+}
+
+.header-content {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+header h1 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.5px;
+}
+
+header h1 .ampersand {
+    color: var(--gold);
+    font-style: italic;
+    font-weight: 600;
+}
+
+.subtitle {
+    color: var(--gold);
+    font-size: 0.85rem;
+    font-weight: 600;
+    opacity: 0.9;
+}
+
+/* Controls */
+.controls {
+    background: var(--bg-card);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+    z-index: 1000;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+}
+
+.date-slider-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.day-btn {
+    background: var(--teal);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    width: 36px;
+    height: 36px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.day-btn:hover {
+    background: var(--teal-light);
+}
+
+.date-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 120px;
+}
+
+.current-day {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--gold);
+}
+
+.current-date {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.day-pills {
+    display: flex;
+    gap: 4px;
+    flex: 1;
+    overflow-x: auto;
+    padding: 2px 0;
+}
+
+.day-pill {
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+}
+
+.day-pill:hover {
+    border-color: var(--teal);
+    color: var(--teal-light);
+}
+
+.day-pill.active {
+    background: var(--teal);
+    border-color: var(--teal);
+    color: #fff;
+}
+
+.day-pill.has-trucks {
+    border-color: var(--teal-dark);
+}
+
+.day-pill .pill-count {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--navy);
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 0.65rem;
+    line-height: 18px;
+    text-align: center;
+    margin-left: 4px;
+    font-weight: 700;
+}
+
+.day-pill.active .pill-count {
+    background: var(--gold);
+    color: var(--navy);
+}
+
+.truck-count {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
+}
+
+.truck-count strong {
+    color: var(--gold);
+}
+
+/* Map */
+#map {
+    height: calc(100vh - 120px);
+    width: 100%;
+    z-index: 1;
+}
+
+/* Dark map tiles overrides */
+.leaflet-container {
+    background: #1a1a2e;
+}
+
+/* Custom marker */
+.truck-marker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.truck-marker-icon {
+    width: 36px;
+    height: 36px;
+    background: var(--teal);
+    border: 3px solid var(--gold);
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(-45deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    transition: transform 0.2s, background 0.2s;
+}
+
+.truck-marker-icon:hover {
+    background: var(--teal-light);
+    transform: rotate(-45deg) scale(1.1);
+}
+
+.truck-marker-icon span {
+    transform: rotate(45deg);
+    font-size: 16px;
+}
+
+/* Cluster marker */
+.truck-cluster {
+    width: 44px;
+    height: 44px;
+    background: var(--gold);
+    border: 3px solid var(--teal);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1rem;
+    color: var(--navy);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.5);
+}
+
+/* Popup */
+.leaflet-popup-content-wrapper {
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+.leaflet-popup-tip {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+}
+
+.leaflet-popup-content {
+    margin: 12px 16px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.popup-truck-name {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--gold);
+    margin-bottom: 4px;
+}
+
+.popup-truck-name a {
+    color: var(--gold);
+    text-decoration: none;
+}
+
+.popup-truck-name a:hover {
+    text-decoration: underline;
+}
+
+.popup-location {
+    font-size: 0.85rem;
+    color: var(--teal-light);
+    margin-bottom: 4px;
+}
+
+.popup-address {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+}
+
+.popup-time {
+    font-size: 0.8rem;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.popup-description {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-top: 6px;
+    line-height: 1.4;
+}
+
+.popup-multi-truck {
+    border-top: 1px solid var(--border);
+    padding-top: 8px;
+    margin-top: 8px;
+}
+
+.popup-multi-truck:first-child {
+    border-top: none;
+    padding-top: 0;
+    margin-top: 0;
+}
+
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: -380px;
+    width: 380px;
+    height: 100vh;
+    background: var(--bg-dark);
+    border-left: 1px solid var(--border);
+    z-index: 2000;
+    transition: right 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar.open {
+    right: 0;
+}
+
+.sidebar-header {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--teal-dark) 100%);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 3px solid var(--gold);
+}
+
+.sidebar-header h2 {
+    font-size: 1.1rem;
+    color: #fff;
+}
+
+.sidebar-header h2 span {
+    color: var(--gold);
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.close-btn:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+.truck-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px;
+}
+
+.truck-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.truck-card:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--teal);
+}
+
+.truck-card-name {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--gold);
+    margin-bottom: 4px;
+}
+
+.truck-card-name a {
+    color: var(--gold);
+    text-decoration: none;
+}
+
+.truck-card-name a:hover {
+    text-decoration: underline;
+}
+
+.truck-card-location {
+    font-size: 0.8rem;
+    color: var(--teal-light);
+    margin-bottom: 2px;
+}
+
+.truck-card-time {
+    font-size: 0.8rem;
+    color: var(--text-primary);
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.truck-card-desc {
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+/* List toggle button */
+.list-toggle {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 52px;
+    height: 52px;
+    background: var(--teal);
+    border: 3px solid var(--gold);
+    border-radius: 50%;
+    color: #fff;
+    cursor: pointer;
+    z-index: 1500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    transition: background 0.2s, transform 0.2s;
+}
+
+.list-toggle:hover {
+    background: var(--teal-light);
+    transform: scale(1.05);
+}
+
+/* Loading overlay */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(13, 17, 23, 0.9);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 3000;
+    transition: opacity 0.3s;
+}
+
+.loading-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid var(--border);
+    border-top-color: var(--teal);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-bottom: 16px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.loading-overlay p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* No trucks message */
+.no-trucks {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-secondary);
+}
+
+.no-trucks h3 {
+    color: var(--gold);
+    margin-bottom: 8px;
+}
+
+/* Leaflet zoom controls dark theme */
+.leaflet-control-zoom a {
+    background: var(--bg-card) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border) !important;
+}
+
+.leaflet-control-zoom a:hover {
+    background: var(--bg-card-hover) !important;
+}
+
+.leaflet-control-attribution {
+    background: rgba(13, 17, 23, 0.8) !important;
+    color: var(--text-secondary) !important;
+    font-size: 10px !important;
+}
+
+.leaflet-control-attribution a {
+    color: var(--teal-light) !important;
+}
+
+/* Powered by Klein Meridian */
+.powered-by {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(13, 17, 23, 0.75);
+    backdrop-filter: blur(6px);
+    padding: 6px 14px;
+    border-radius: 8px;
+    z-index: 1500;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    pointer-events: none;
+}
+
+.powered-logo {
+    height: 52px;
+    width: auto;
+    opacity: 0.5;
+}
+
+.powered-by strong {
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+/* My Location button */
+.my-location-btn {
+    position: fixed;
+    bottom: 84px;
+    right: 24px;
+    width: 44px;
+    height: 44px;
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: 50%;
+    color: var(--text-primary);
+    cursor: pointer;
+    z-index: 1500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    transition: all 0.2s;
+}
+
+.my-location-btn:hover {
+    border-color: var(--teal);
+    color: var(--teal-light);
+    background: var(--bg-card-hover);
+}
+
+.my-location-btn.active {
+    border-color: var(--teal);
+    background: var(--teal);
+    color: #fff;
+}
+
+/* Radius control */
+.radius-control {
+    position: fixed;
+    bottom: 136px;
+    right: 12px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 14px;
+    z-index: 1500;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    min-width: 160px;
+}
+
+.radius-control.hidden {
+    display: none;
+}
+
+.radius-control label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.radius-control label span {
+    color: var(--gold);
+    font-weight: 700;
+}
+
+.radius-control input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    outline: none;
+}
+
+.radius-control input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background: var(--teal);
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.radius-control input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: var(--teal);
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.clear-radius-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    font-size: 0.7rem;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.clear-radius-btn:hover {
+    border-color: var(--teal);
+    color: var(--teal-light);
+}
+
+/* User location marker pulse */
+.user-location-dot {
+    width: 16px;
+    height: 16px;
+    background: #4285F4;
+    border: 3px solid #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.3), 0 2px 8px rgba(0,0,0,0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    header {
+        padding: 10px 14px;
+    }
+
+    header h1 {
+        font-size: 1.3rem;
+    }
+
+    .subtitle {
+        font-size: 0.75rem;
+    }
+
+    .controls {
+        padding: 8px 12px;
+        gap: 6px;
+    }
+
+    .date-slider-container {
+        gap: 6px;
+    }
+
+    .day-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .date-display {
+        min-width: 100px;
+    }
+
+    .current-day {
+        font-size: 0.9rem;
+    }
+
+    .current-date {
+        font-size: 0.7rem;
+    }
+
+    .truck-count {
+        font-size: 0.8rem;
+    }
+
+    .sidebar {
+        width: 100%;
+        right: -100%;
+    }
+
+    .day-pills {
+        display: none;
+    }
+
+    #map {
+        height: calc(100vh - 105px);
+    }
+
+    /* Larger touch targets on mobile */
+    .list-toggle {
+        bottom: 16px;
+        right: 16px;
+        width: 48px;
+        height: 48px;
+    }
+
+    .my-location-btn {
+        bottom: 72px;
+        right: 16px;
+        width: 48px;
+        height: 48px;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .radius-control {
+        bottom: 128px;
+        right: 8px;
+        min-width: 150px;
+        padding: 8px 12px;
+    }
+
+    .radius-control label {
+        font-size: 0.7rem;
+    }
+
+    .radius-control input[type="range"]::-webkit-slider-thumb {
+        width: 20px;
+        height: 20px;
+    }
+
+    .radius-control input[type="range"]::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+    }
+
+    .clear-radius-btn {
+        padding: 6px 10px;
+        font-size: 0.72rem;
+    }
+
+    /* Powered by - slightly smaller on mobile */
+    .powered-by {
+        bottom: 6px;
+        left: 6px;
+        padding: 4px 10px;
+        font-size: 0.65rem;
+        gap: 6px;
+    }
+
+    .powered-logo {
+        height: 40px;
+    }
+
+    /* Popups - wider on mobile for readability */
+    .leaflet-popup-content {
+        margin: 10px 12px;
+    }
+
+    .popup-truck-name {
+        font-size: 0.9rem;
+    }
+
+    /* Truck cards - more padding for touch */
+    .truck-card {
+        padding: 16px;
+        margin-bottom: 8px;
+    }
+
+    .truck-card-name {
+        font-size: 1rem;
+    }
+
+    .truck-card-location {
+        font-size: 0.85rem;
+    }
+
+    .truck-card-time {
+        font-size: 0.85rem;
+    }
+
+    .truck-card-desc {
+        font-size: 0.75rem;
+    }
+
+    /* Zoom controls - bigger on mobile */
+    .leaflet-control-zoom a {
+        width: 36px !important;
+        height: 36px !important;
+        line-height: 36px !important;
+        font-size: 18px !important;
+    }
+}
+
+/* Extra small screens (iPhone SE, etc.) */
+@media (max-width: 380px) {
+    header h1 {
+        font-size: 1.1rem;
+    }
+
+    .subtitle {
+        font-size: 0.65rem;
+    }
+
+    .date-display {
+        min-width: 80px;
+    }
+
+    .current-day {
+        font-size: 0.8rem;
+    }
+
+    .powered-by span {
+        display: none;
+    }
+
+    .powered-logo {
+        height: 32px;
+    }
+}
+
+/* Safe area insets for notched phones */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+    .list-toggle {
+        bottom: calc(16px + env(safe-area-inset-bottom));
+    }
+
+    .my-location-btn {
+        bottom: calc(72px + env(safe-area-inset-bottom));
+    }
+
+    .radius-control {
+        bottom: calc(128px + env(safe-area-inset-bottom));
+    }
+
+    .powered-by {
+        bottom: calc(6px + env(safe-area-inset-bottom));
+    }
+}

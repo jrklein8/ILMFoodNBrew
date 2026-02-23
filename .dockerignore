@@ -1,0 +1,11 @@
+**/bin/
+**/obj/
+**/.vs/
+**/.vscode/
+**/node_modules/
+**/.git/
+*.user
+*.suo
+.gitignore
+README.md
+geocode_cache.json

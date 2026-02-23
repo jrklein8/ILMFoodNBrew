@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="ILMFoodNBrew.Api/ILMFoodNBrew.Api.csproj" />
+  <Project Path="ILMFoodNBrew.Scraper/ILMFoodNBrew.Scraper.csproj" />
+  <Project Path="ILMFoodNBrew.Shared/ILMFoodNBrew.Shared.csproj" />
+</Solution>
