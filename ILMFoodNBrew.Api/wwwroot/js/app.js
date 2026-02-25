@@ -67,8 +67,8 @@
         allData.allAppearances.forEach(a => dateSet.add(a.date));
         availableDates = Array.from(dateSet).sort();
 
-        // Find today or the closest future date
-        const today = new Date().toISOString().slice(0, 10);
+        // Find today or the closest future date (Eastern Time)
+        const today = todayDateStr();
         selectedDateIndex = availableDates.findIndex(d => d >= today);
         if (selectedDateIndex < 0) selectedDateIndex = availableDates.length - 1;
 
@@ -111,14 +111,14 @@
             pill.classList.toggle('active', i === index);
         });
 
-        // Update header display
+        // Update header display (Eastern Time)
         const d = parseDate(date);
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
+        const todayParsed = parseDate(todayDateStr());
+        todayParsed.setHours(0, 0, 0, 0);
         const dateObj = new Date(d);
         dateObj.setHours(0, 0, 0, 0);
 
-        const diffDays = Math.round((dateObj - today) / (1000 * 60 * 60 * 24));
+        const diffDays = Math.round((dateObj - todayParsed) / (1000 * 60 * 60 * 24));
         let dayLabel;
         if (diffDays === 0) dayLabel = 'Today';
         else if (diffDays === 1) dayLabel = 'Tomorrow';
@@ -304,6 +304,16 @@
     }
 
     // Utilities
+    function todayDateStr() {
+        // Always use Eastern Time so the day doesn't flip at 7pm EST
+        const eastern = new Date().toLocaleString('en-US', { timeZone: 'America/New_York' });
+        const d = new Date(eastern);
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${y}-${m}-${day}`;
+    }
+
     function parseDate(dateStr) {
         // dateStr is "yyyy-MM-dd"
         const [y, m, d] = dateStr.split('-').map(Number);
